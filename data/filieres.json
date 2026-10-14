@@ -1,0 +1,140 @@
+{
+  "annee_universitaire": "2025-2026",
+  "source": "guide_etudiant_2025_2026.pdf",
+  "pages_imprimees": [
+    6,
+    7
+  ],
+  "departements": [
+    {
+      "code": "GMPMI",
+      "nom": "Genie Mecanique, Productique et Maintenance Industrielle",
+      "filieres": [
+        {
+          "diplome": "DUT",
+          "nom": "Genie Mecanique et Productique",
+          "code": "GMP"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Genie Industriel et Maintenance",
+          "code": "GIM"
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Production Industrielle Mecatronique",
+          "code": "PIM"
+        }
+      ]
+    },
+    {
+      "code": "GESI",
+      "nom": "Genie Electrique et Systemes Intelligents",
+      "filieres": [
+        {
+          "diplome": "DUT",
+          "nom": "Genie Electrique",
+          "code": "GE"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Systemes Embarques",
+          "code": "SE"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Gestion Reseaux et Securite",
+          "code": "GRS"
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Genie Electrique et Systemes Embarques",
+          "code": "GESE"
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Cybersecurite des Systemes Intelligents Connectes",
+          "code": "CSIC"
+        }
+      ]
+    },
+    {
+      "code": "GI",
+      "nom": "Genie Informatique",
+      "filieres": [
+        {
+          "diplome": "DUT",
+          "nom": "Ingenierie Logicielle",
+          "code": null
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Ingenierie des Donnees",
+          "code": null
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Genie Logiciel",
+          "code": null
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Sciences des Donnees et Intelligence Artificielle",
+          "code": "SDIA"
+        }
+      ]
+    },
+    {
+      "code": "STG",
+      "nom": "Sciences et Techniques de la Gestion",
+      "filieres": [
+        {
+          "diplome": "DUT",
+          "nom": "Gestion des Ressources Humaines",
+          "code": "GRH"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Techniques de Gestion Commerciale",
+          "code": "TGC"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Gestion Logistique et Transport",
+          "code": "GLT"
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Techniques de Management",
+          "code": "TM"
+        },
+        {
+          "diplome": "DBT",
+          "nom": "Chaine Logistique Globale",
+          "code": "CLG"
+        }
+      ]
+    },
+    {
+      "code": "GP",
+      "nom": "Genie des Procedes",
+      "filieres": [
+        {
+          "diplome": "DUT",
+          "nom": "Genie des Procedes",
+          "code": null
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Agroalimentaire et Bioprocedes",
+          "code": null
+        },
+        {
+          "diplome": "DUT",
+          "nom": "Genie Thermique et Energie",
+          "code": null
+        }
+      ]
+    }
+  ]
+}
