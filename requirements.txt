@@ -1,0 +1,4 @@
+# Bornes minimales testees : pdfplumber 0.11.9 et chromadb 1.5.9 (sandbox, Python 3.12).
+# Pour figer tes versions exactes sur ta machine : py -m pip freeze | findstr /i "pdfplumber chromadb"
+pdfplumber>=0.11
+chromadb>=1.0

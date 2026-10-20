@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Documents sources : non versionnes (droits / donnees personnelles). Voir documents/README.md
+documents/*
+!documents/README.md
+
+# Textes extraits contenant des donnees personnelles (numeros de telephone d'etudiants)
+data/extracted/pages.jsonl
+data/extracted/clubs.csv
+
+# Passages et index : regenerables, contiennent les memes donnees personnelles
+data/chunks/
+data/index/
+
+# Jeux de donnees clones
+doda/
