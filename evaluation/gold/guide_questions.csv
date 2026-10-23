@@ -1,0 +1,23 @@
+id,chunk_id,page,question,fact_regex,note
+p10-01,guide2526-p10-1,10,Combien de modules compte un parcours DUT ?,\b28\b,
+p10-02,guide2526-p10-1,10,Combien de crédits faut-il accumuler pour obtenir le DUT ?,\b120\b,
+p10-03,guide2526-p10-1,10,Que faut-il pour s'inscrire en deuxième année de DUT ?,semestres 1 et 2 && stage d.initiation,deux conditions : modules S1+S2 et stage d'initiation
+p10-04,guide2526-p10-1,10,Quelle part de la note du module Stage représente le stage technique ?,80\s?%,
+p10-05,guide2526-p10-2,10,Combien de crédits faut-il pour obtenir le Bachelor en technologie ?,\b60\b,
+p10-06,guide2526-p10-2,10,Comment se fait l'admission dans une filière Bachelor ?,pr[ée]s[ée]lection && concours,
+p11-01,guide2526-p11-1,11,Dans quel cas un module est-il validé ?,\b10\b && \b5\b,moyenne >= 10 et aucun élément < 5
+p11-02,guide2526-p11-1,11,Quelle est la note maximale que je peux obtenir au rattrapage ?,\b10\b,regex permissive (10 / 10/20)
+p11-03,guide2526-p11-1,11,À partir de quelle moyenne un module peut-il être rattrapé ?,\b4\b|quatre,
+p11-04,guide2526-p11-2,11,Quelles sont les conditions pour que l'année soit validée ?,\b10\b && \b7\b,moyenne générale >= 10 et aucun module < 7
+p11-05,guide2526-p11-2,11,Pour combien de modules non acquis une dérogation peut-elle être accordée ?,\b2\b|deux,
+p11-06,guide2526-p11-2,11,"Si je suis ajourné, quels modules dois-je refaire ?","(uniquement|seulement|que).{0,40}non valid",
+p11-07,guide2526-p11-3,11,"Dans l'exemple du guide où la moyenne annuelle est de 9,60, l'étudiant est-il admis ?",journ,exemple p. 11 : Ajourné
+p11-08,guide2526-p11-3,11,"Dans l'exemple où le module 11 a 08,00 et l'année est admise, comment ce module est-il validé ?",compensation,
+p12-01,guide2526-p12-1,12,Dans quel délai dois-je justifier une absence à un contrôle ?,48,
+p12-02,guide2526-p12-1,12,Où dois-je déposer mon certificat médical pour justifier mon absence ?,infirmerie,
+p12-03,guide2526-p12-1,12,Qui décide si une absence à un contrôle est justifiée ?,jury,
+p12-04,guide2526-p12-1,12,Quelle sanction est possible en cas de fraude pendant un contrôle ?,[Dd]iscipline,
+p12-05,guide2526-p12-2,12,Pendant combien de temps puis-je consulter mes copies après les résultats du semestre ?,sept|\b7\b,
+p12-06,guide2526-p12-2,12,Un étudiant passé devant le Conseil de discipline peut-il bénéficier des points de jury ?,aucun\s+cas|ne peut pas|ne peuvent pas|\bnon\b,
+p12-07,guide2526-p12-3,12,Combien de points de jury peut-on obtenir sur la moyenne générale de l'année ?,"0[,.]2",
+p12-08,guide2526-p12-3,12,Les deux types de points de jury sont-ils cumulables ?,cumulable|\boui\b,

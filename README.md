@@ -45,7 +45,10 @@ py -m src.retrieval.index_chunks
 py -m src.retrieval.search "Quel est le loyer annuel de l'internat ?"
 # 4) assistant et évaluation
 py -m src.app.ask "Quel est le loyer annuel de l'internat ?" --debug
+py -m evaluation.smoke_generation  # la reponse contient-elle le bon fait ? (garde-fou anti-regression)
 py -m evaluation.eval_retrieval
+py -m evaluation.gold_check                      # hors ligne : faits attendus presents dans leurs chunks + carte de couverture
+py -m evaluation.run_coverage --mode retrieval --pages 10-12   # puis --mode oracle, --mode e2e
 py -m tests.test_situations         # ajouter --pipeline pour la recherche normale (SLM seul)
 ```
 `data/extracted/calendrier_2025_2026.csv` et `filieres.json` sont versionnés : transcription des pages-images du guide (régénérables avec `py -m src.ingest.build_structured_data`).

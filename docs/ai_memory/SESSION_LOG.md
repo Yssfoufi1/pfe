@@ -25,6 +25,7 @@
 - Glossary sigle `EST` matched French verb "est" (sandbox test) → acronyms matched case-sensitively.
 - `test_situations.py` parser cut answers at "(p." → regex fixed **in sandbox only**; scores re-computed manually from the student's output.
 - Darija quality: no fix; deferred (D8/D9).
+- Hardware misdescribed as "no GPU" by the assistant; the student showed Task Manager (Intel UHD Graphics 620, 3.9 GB shared). Corrected everywhere ("no dedicated GPU"); `ollama ps` shows 100% CPU.
 
 **Tests/verification:** see PROGRESS.md table.
 
@@ -49,4 +50,6 @@
 
 **Remaining:** NEXT_STEPS #1–#3.
 
-**Next recommended action:** student applies the reorganisation and pastes the offline check outputs; then Phase 4.
+**Update 2026-10-19:** the student applied the reorganisation in `pfe_v2` and pushed it (commit `9ba1cd5`); offline checks 24/24, coherent, 20/20; index rebuilt in 93.4 s. Found: `ask` answered "(18)" (prompt reminder, D19) — fix and `evaluation/smoke_generation.py` prepared. Folder rename `pfe`→`pfe_old` refused (folder in use), harmless. Git emitted LF→CRLF warnings (harmless) and showed an empty Chroma file as "renamed" to `evaluation/__init__.py` (both empty; cosmetic).
+
+**Next recommended action:** student runs the fix verification (NEXT_STEPS #1); then Phase 4.

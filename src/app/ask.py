@@ -21,8 +21,8 @@ Règles :
 1. Réponds UNIQUEMENT à partir du CONTEXTE fourni. N'utilise aucune autre connaissance.
 2. Si le contexte ne contient pas la réponse, dis-le clairement et conseille de contacter le service concerné (scolarité, direction pédagogique).
 3. Ne modifie jamais un chiffre, une date, un horaire ou un nom du contexte : recopie-les tels quels.
-4. Indique la page source entre parenthèses, par exemple (p. 17).
-5. Réponse courte et claire.
+4. Réponds par une ou deux phrases complètes. N'écris aucun numéro de page : les sources sont ajoutées automatiquement après ta réponse.
+5. Sois clair et concis.
 6. {lang_rule}"""
 
 LANG_RULES = {
@@ -47,7 +47,7 @@ def select_hits(hits):
 def build_messages(question: str, hits, variant: str):
     blocks = [f"[Source {i}] {h['context']}\n{h['text']}" for i, h in enumerate(hits, 1)]
     user = ("CONTEXTE :\n\n" + "\n\n".join(blocks)
-            + f"\n\nQUESTION : {question}\n\nRappel : termine par la page source entre parenthèses.")
+            + f"\n\nQUESTION : {question}")
     return [
         {"role": "system", "content": SYSTEM_PROMPT.format(lang_rule=LANG_RULES[variant])},
         {"role": "user", "content": user},

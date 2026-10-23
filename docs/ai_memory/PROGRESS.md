@@ -1,6 +1,6 @@
 # PROGRESS — latest verified state
 
-**Last update:** 2026-10-14 · **Phase:** Phase 1 — generic RAG on the university corpus (EST Fès student guide) + situation-problem module.
+**Last update:** 2026-10-22 · **Phase:** Phase 1 — generic RAG on the university corpus (EST Fès student guide) + situation-problem module.
 Tags: **[VERIFIED]** student pasted real output · **[SANDBOX]** only checked in the assistant's sandbox with fake/mock models · **[PROPOSED]** no evidence it was applied. No percentage progress is claimed.
 
 ## Completed (evidence = outputs pasted by the student)
@@ -21,6 +21,7 @@ Tags: **[VERIFIED]** student pasted real output · **[SANDBOX]** only checked in
 | `ask.py` Arabizi "ch7al kaykhles talib f l-dakhiliya f l-3am ?" (early version) | **incoherent** answer, polluted by an irrelevant chunk (p.11 examples) |
 | `test_darija_model.py` v1 (plain Atlas-Chat-2B) | fluent Darija but unfaithful: infirmerie→"pharmacie", emprunter→"produire", "p."→"partie"; Arabizi not produced (text repeated in Arabic script) |
 | `test_darija_model.py` v2 (protected tags + glossary + checks) | `ar_ok 3/4`, `lat_ok 1/4`; remaining semantic errors ("loyer"→"installation", "déposer la justification"→"pay the absence"); sentence 2 duplicated hours |
+| `ollama run qwen2.5:3b --verbose` (no context) | eval rate 6.68 then 8.06 tokens/s (second run after closing background apps); `ollama ps`: 100% CPU, 2.2 GB, context 4096. Without context the model invented definitions of RAG ("Requiring Augmented Guidance", then "Résumé, Analyse et Génération") |
 | `test_situations.py` oracle (rules chunks p.11-1/p.11-2) | printed 0/5 + 1/6 **because of a parser bug**; manually re-scored: modules 2/5, year 2/6 = 4/11; intermediate verdicts (RATTRAPAGE/JURY) 0/3 |
 | `test_situations.py --pipeline` | re-scored: modules 3/5, year 5/6 = 8/11; intermediate verdicts 0/3. Biased: Y1–Y3 are the guide's own examples present in retrieved context; n=11, one run |
 
@@ -41,7 +42,9 @@ Retrieval + `ask.py` for FR/EN/AR/Darija questions works on the student's machin
 ## Repository audit and reorganisation (2026-10-18)
 - Repo `github.com/Yssfoufi1/pfe` cloned and checked by the assistant on a copy (no Ollama): 19 `.py` compile; `test_rules` 20/20; `check_structured_data` coherent; `check_chunks` 24/24; pages/clubs/chunks regenerated from the PDF = committed files; Chroma index = 42 items, 1024 dims, ids match. [VERIFIED in sandbox]
 - Findings: the repo was **public** and tracked student phone numbers (`clubs.csv`, `pages.jsonl`, `chunks.jsonl`, 2 numbers in a test), no `.gitignore`, `__pycache__`, Chroma binaries and the PDF; README was empty; no `requirements.txt`. The student set the repo to **private** (confirmed by him). Git history still holds the files (commit `700574c`).
-- Reorganisation into the roadmap tree prepared and checked in the sandbox (imports/paths only, no logic change): outputs identical, offline tests pass, wiring checked end to end with a mock Ollama (numbers from the mock mean nothing). **Applied in the student's local repo: [UNKNOWN].**
+- Reorganisation into the roadmap tree prepared and checked in the sandbox (imports/paths only, no logic change): outputs identical, offline tests pass, wiring checked end to end with a mock Ollama (numbers from the mock mean nothing). **Applied and pushed by the student 2026-10-19 (commit `9ba1cd5`) [VERIFIED by his outputs]:** offline checks 24/24 / coherent / 20/20, index rebuilt (42 chunks, 93.4 s). The folder rename `pfe`→`pfe_old` was refused (folder in use); work continues in `pfe_v2`.
+- **Regression [VERIFIED]:** after the move, `ask` answered "(18)" to the rent question. Cause: the "Rappel : termine par la page source" line in the prompt. Fix D19 applied and **verified on Qwen** [VERIFIED]: `ask` answers "…1 140,00 DH"; `evaluation.smoke_generation` 8/9 in 391 s (≈ 43 s/question); the single failure is a regex too strict on "1,140 DH" (English format), fixed in the test; the model reformatted the number (rule 3 says copy numbers as-is). After the regex fix `smoke_generation` = 9/9 (254 s total; per question min 8 s, median 22 s, max 57 s). Latency: both models stay loaded (`ollama ps`: qwen2.5:3b 2.2 GB + bge-m3 1.2 GB, 100% CPU); the old test took 391 s with VS Code open and 161 s after closing it → RAM pressure, not model swapping. [VERIFIED by the student's outputs]
+- **Phase 4 method (D20), prepared in the sandbox, not yet run:** `evaluation/gold/guide_questions.csv` (22 questions, pages 10–12, 8 chunks), `evaluation/gold_check.py` (offline: each expected fact matches its source chunk; it caught a line-break bug in one regex), `evaluation/run_coverage.py` (modes retrieval / oracle / e2e), `chat_with_stats()` in `rag_common.py`. Coverage so far: 8/42 chunks.
 - Added: `README.md`, `requirements.txt`, `.gitignore`, `documents/README.md`, `docs/ROADMAP_TRACKING.md`; `docs/DECISIONS.md` gained D16–D18. Phone numbers removed from `tests/check_chunks.py`.
 
 ## Files this session
@@ -50,9 +53,10 @@ Retrieval + `ask.py` for FR/EN/AR/Darija questions works on the student's machin
 - Nothing deleted. Git status of the project: [UNKNOWN].
 
 ## Exact next action
-Student applies the reorganisation locally, regenerates the data and pastes the outputs of the three offline checks (see `NEXT_STEPS.md` #1). Then roadmap Phase 4 (`NEXT_STEPS.md` #2). `situation_pipeline.py` stays on hold until the supervisor/student decide SLM-only vs hybrid.
+Roadmap Phase 4, batch 1: student reviews the gold questions then runs `gold_check` and `run_coverage` (see `NEXT_STEPS.md` #1). Then roadmap Phase 4 (`NEXT_STEPS.md` #2). `situation_pipeline.py` stays on hold until the supervisor/student decide SLM-only vs hybrid.
 
 ## Must know before continuing
 - The student works through normal chat and copies code manually; never assume a suggested file was applied.
 - Use `py`, not `python`. Ollama must be running. Student writes in Darija Arabizi (Latin letters) mixed with French/English.
 - Do not trust mock-server results as model quality.
+- Hardware wording: the laptop has an **integrated** Intel UHD Graphics 620 (not "no GPU"); it shares the 8 GB RAM and `ollama ps` shows 100% CPU, so it is unused. Earlier reports said "sans GPU"; corrected.

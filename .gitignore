@@ -17,3 +17,6 @@ data/index/
 
 # Jeux de donnees clones
 doda/
+
+# Resultats d evaluation detailles (peuvent contenir des donnees personnelles)
+evaluation/results/

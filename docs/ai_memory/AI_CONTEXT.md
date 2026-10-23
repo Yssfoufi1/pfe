@@ -1,13 +1,13 @@
 # AI_CONTEXT — PFE: local RAG assistant for EST Fès
 
-> Main reference for any AI assistant. Last updated: 2026-10-14.
+> Main reference for any AI assistant. Last updated: 2026-10-19.
 > Status tags used in all docs: **[VERIFIED]** = the student ran it and pasted the output · **[SANDBOX]** = verified only in the assistant's sandbox (mock/fake models, no Ollama) · **[PROPOSED]** = code/idea given, no evidence it was applied · **[INFERRED]** · **[UNKNOWN]**.
 > Read together with: `AI_HANDOFF.md` (short state), `PROGRESS.md`, `NEXT_STEPS.md`, `DECISIONS.md`, `SESSION_LOG.md`, `AI_INSTRUCTIONS.md`.
 
 ## 1. Project
 - **Type:** final-year project (PFE), Data Engineering (Ingénierie des Données), École Supérieure de Technologie de Fès (EST Fès).
 - **Official title:** *Souveraineté des données et maîtrise des coûts : développement d'un assistant conversationnel via une architecture RAG locale et un SLM.*
-- **Problem:** cloud LLMs send questions/documents to foreign servers (data sovereignty, Moroccan law 09-08) and cost money per token. Goal: an assistant that runs fully locally on modest hardware (8 GB RAM, no GPU) with a Small Language Model.
+- **Problem:** cloud LLMs send questions/documents to foreign servers (data sovereignty, Moroccan law 09-08) and cost money per token. Goal: an assistant that runs fully locally on modest hardware (8 GB RAM, no dedicated GPU) with a Small Language Model.
 - **Use case chosen (after supervisor feedback):** a university assistant answering students' questions from the *Guide pratique de l'étudiant 2025-2026* (the "head document"). A health use case was considered earlier and is **not** retained.
 
 ## 2. Supervisor guidance (paraphrased from his email)
@@ -39,7 +39,7 @@ Do not fix the use case too early; first deploy a working generic RAG assistant 
 | Timetable SQL module / automatic update pipeline / UI / deployment | Not started |
 
 ## 5. Technology stack
-Windows 11 laptop (Lenovo X1 Carbon 7th gen, Intel i7 8th gen, 8 GB RAM, no GPU) · Python 3.13 via the `py` launcher (the `python` alias opens the Microsoft Store — **always use `py`**) · Ollama (local LLM server, `http://localhost:11434`) · models: `qwen2.5:3b` (generation), `bge-m3` (embeddings, 1024-dim), `atlas-chat-2b` (alias of `hf.co/QuantFactory/Atlas-Chat-2B-GGUF:Q4_K_M`, tested for Darija, not used in the pipeline) · `pdfplumber`, `chromadb` · standard library only for HTTP (`urllib`). Planned: FastAPI/Streamlit, Docker, SQLite.
+Windows 11 laptop (Lenovo X1 Carbon 7th gen, Intel i7 8th gen, 8 GB RAM, **no dedicated GPU**; integrated Intel UHD Graphics 620 shares the RAM; Ollama runs **100% on CPU** [VERIFIED: `ollama ps`], ≈ 7–8 tokens/s) · Python 3.13 via the `py` launcher (the `python` alias opens the Microsoft Store — **always use `py`**) · Ollama (local LLM server, `http://localhost:11434`) · models: `qwen2.5:3b` (generation), `bge-m3` (embeddings, 1024-dim), `atlas-chat-2b` (alias of `hf.co/QuantFactory/Atlas-Chat-2B-GGUF:Q4_K_M`, tested for Darija, not used in the pipeline) · `pdfplumber`, `chromadb` · standard library only for HTTP (`urllib`). Planned: FastAPI/Streamlit, Docker, SQLite.
 
 ## 6. Architecture
 ```
@@ -56,7 +56,7 @@ Structured data (not RAG): data/calendrier_2025_2026.csv, data/filieres.json, da
 ```
 Vector scores: vectors are normalised; Chroma default distance is squared L2 → `score = 1 - d/2` (= cosine).
 
-## 7. Directory layout (roadmap §9 tree, applied 2026-10-18 — repo `github.com/Yssfoufi1/pfe`, now private) — reorganisation proposed by the assistant, **applied in the student's local repo: [UNKNOWN until he confirms]**
+## 7. Directory layout (roadmap §9 tree, applied 2026-10-18 — repo `github.com/Yssfoufi1/pfe`, now private) — reorganisation proposed by the assistant, **applied and pushed by the student on 2026-10-19 (commit `9ba1cd5`, local folder `pfe_v2`)**
 ```
 pfe/
   README.md  requirements.txt  .gitignore
@@ -73,7 +73,7 @@ pfe/
     app/                            ask.py, lang_detect.py, rules.py
     experimental/darija_pipeline.py Atlas-Chat guarded translation (frozen, see DECISIONS D18)
   tests/                check_chunks.py, check_structured_data.py, test_rules.py, test_embed.py, test_darija_model.py, test_situations.py
-  evaluation/           eval_retrieval.py   (question sets for roadmap Phase 4 still to create)
+  evaluation/           eval_retrieval.py, smoke_generation.py (regression guard for `ask`; roadmap Phase 4 question sets still to create)
   docs/                 ROADMAP_TRACKING.md (single tracker, aligned with the roadmap .docx), DECISIONS.md, ai_memory/ (this pack)
 ```
 Not in the repo (sandbox only, untested): `situation_pipeline.py`, the `json_mode` option of `chat()`, the verdict-parser fix of `test_situations.py`. **Reference document:** `roadmap_PFE_RAG_SLM_alignee_encadrant.docx` (kept outside the repo or in `docs/` if the student adds it); it defers SQL timetables, change detection/incremental re-indexing, website integration, deployment, multi-user and exhaustive model comparison.
@@ -126,7 +126,7 @@ py -m tests.test_situations ; py -m tests.test_situations --pipeline
 - Key parameters: `MAX_CHARS=1400`, `MIN_CHARS=300`, `TOP_K=3`, `REL_MARGIN=0.12`, `MIN_SCORE=0.0` (disabled, to calibrate), `num_ctx=4096`, embed batch 16.
 
 ## 10. Constraints
-8 GB RAM / no GPU: ≈ 15–20 s per Qwen call; bge-m3 (~1.2 GB) and Qwen (~2 GB) both resident; first embedding call ≈ 9 s (model load). Windows console shows Arabic poorly (copy-paste outputs). Sandbox used by the assistant has no Ollama: only mock servers (results with mocks say nothing about model quality).
+8 GB RAM / no dedicated GPU (the integrated GPU shares system RAM, so it adds no memory): ≈ 15–20 s per Qwen call; bge-m3 (~1.2 GB) and Qwen (~2 GB) both resident; first embedding call ≈ 9 s (model load). Windows console shows Arabic poorly (copy-paste outputs). Sandbox used by the assistant has no Ollama: only mock servers (results with mocks say nothing about model quality).
 
 ## 11. Conventions
 Printed page = PDF page − 1 (cite the printed page). Scripts are standalone, run from the project root, UTF-8, no secrets. Every new data-processing step gets an automatic check script. Tests report counts, not impressions.

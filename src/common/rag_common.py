@@ -57,3 +57,17 @@ def chat(messages, model=CHAT_MODEL, temperature=0.1, num_ctx=4096):
         "options": {"temperature": temperature, "num_ctx": num_ctx},
     })
     return res["message"]["content"].strip()
+
+
+def chat_with_stats(messages, model=CHAT_MODEL, temperature=0.1, num_ctx=4096):
+    """Comme chat(), mais renvoie aussi les mesures d'Ollama (tokens et durees en secondes).
+    Retourne (texte, stats) ; stats = prompt_tokens, prompt_s, gen_tokens, gen_s, load_s, total_s (0 si absent)."""
+    res = _post("/api/chat", {
+        "model": model, "messages": messages, "stream": False,
+        "options": {"temperature": temperature, "num_ctx": num_ctx},
+    })
+    ns = lambda k: (res.get(k) or 0) / 1e9
+    stats = {"prompt_tokens": res.get("prompt_eval_count") or 0, "prompt_s": ns("prompt_eval_duration"),
+             "gen_tokens": res.get("eval_count") or 0, "gen_s": ns("eval_duration"),
+             "load_s": ns("load_duration"), "total_s": ns("total_duration")}
+    return res["message"]["content"].strip(), stats
