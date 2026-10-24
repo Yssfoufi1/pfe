@@ -60,10 +60,25 @@ def run_oracle(g, chunk, build_messages, chat_with_stats):
 def run_e2e(g, chunk, answer):
     text, hits = answer(g["question"])
     ids = [h["id"] for h in hits]
-    ok = fact_ok(g["fact_regex"], text) and real_answer(text)
-    detail = ("fait present" if ok else "fait ABSENT") + ("; chunk cible recupere" if g["chunk_id"] in ids else "; chunk cible NON recupere")
-    return ok, detail, text, {}
 
+    target_retrieved = g["chunk_id"] in ids
+    answer_has_fact = (
+        fact_ok(g["fact_regex"], text)
+        and real_answer(text)
+    )
+
+    ok = target_retrieved and answer_has_fact
+
+    detail = (
+        ("fait present" if answer_has_fact else "fait ABSENT")
+        + (
+            "; chunk cible recupere"
+            if target_retrieved
+            else "; chunk cible NON recupere"
+        )
+    )
+
+    return ok, detail, text, {}
 
 def main():
     ap = argparse.ArgumentParser()
